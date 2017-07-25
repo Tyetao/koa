@@ -5,37 +5,49 @@ var ejs = require('ejs');
 var heredoc = require('heredoc');
 
 var tpl = heredoc(function () {/*
- <xml>
- <ToUserName><![CDATA[<% ToUserName %>]]></ToUserName>
- <FromUserName><![CDATA[<% FromUserName %>]]></FromUserName>
- <CreateTime><% CreateTime %></CreateTime>
- <MsgType><![CDATA[<% MsgType %>]]></MsgType>
- <% if (MsgType === 'text') { %>
-    <Content><![CDATA[<% Content %>]]></Content>
- <% } else if (MsgType === 'image') { %>
+    <xml>
+    <ToUserName><![CDATA[<%= toUserName %>]]></ToUserName>
+    <FromUserName><![CDATA[<%= fromUserName %>]]></FromUserName>
+    <CreateTime><% createTime %></CreateTime>
+    <MsgType><![CDATA[<%= msgType %>]]></MsgType>
+    <% if (msgType === 'text') { %>
+    <Content><![CDATA[<%= content %>]]></Content>
+    <% } else if (msgType === 'image') { %>
     <Image>
-        <MediaId><![CDATA[<% Content.media_id %>]]></MediaId>
+        <MediaId><![CDATA[<%= content.media_id %>]]></MediaId>
     </Image>
- <% } else if (MsgType === 'voice') { %>
+    <% } else if (msgType === 'voice') { %>
     <Voice>
-        <MediaId><![CDATA[<% Content.media_id %>]]></MediaId>
+        <MediaId><![CDATA[<%= content.media_id %>]]></MediaId>
     </Voice>
- <% } else if (MsgType === 'voice') { %>
-     <Voice>
-        <MediaId><![CDATA[<% Content.media_id %>]]></MediaId>
-        <Title><![CDATA[<% Content.title %>]]></Title>
-        <Description><![CDATA[<% Content.description %>]]></Description>
-     </Voice>
- <% } else if (MsgType === 'music') { %>
-     <Music>
-         <Title><![CDATA[<% Content.title %>]]></Title>
-         <Description><![CDATA[<% Content.description %>]]></Description>
-         <MusicUrl><![CDATA[<% Content.MUSIC_Url %>]]></MusicUrl>
-         <HQMusicUrl><![CDATA[<% Content.HQ_MUSIC_Url %>]]></HQMusicUrl>
-         <ThumbMediaId><![CDATA[<% Content.thumbMediaId %>]]></ThumbMediaId>
-     </Music>
- <% } %>
- </xml>
+    <% } else if (msgType === 'video') { %>
+        <Voice>
+        <MediaId><![CDATA[<%= content.media_id %>]]></MediaId>
+        <Title><![CDATA[<%= content.title %>]]></Title>
+        <Description><![CDATA[<%= content.description %>]]></Description>
+        </Voice>
+    <% } else if (msgType === 'music') { %>
+        <Music>
+            <Title><![CDATA[<%= content.title %>]]></Title>
+            <Description><![CDATA[<%= content.description %>]]></Description>
+            <MusicUrl><![CDATA[<%= content.musicUrl %>]]></MusicUrl>
+            <HQMusicUrl><![CDATA[<%= content.hqMusicUrl %>]]></HQMusicUrl>
+            <ThumbMediaId><![CDATA[<%= content.thumbMediaId %>]]></ThumbMediaId>
+        </Music>
+    <% } else if (msgType === 'news') { %>
+    <ArticleCount><%= content.length %></ArticleCount>
+    <Articles>
+        <% content.forEach(function(item) { %>
+        <item>
+            <Title><![CDATA[<%= item.title %>]]></Title> 
+            <Description><![CDATA[<%= item.description %>]]></Description>
+            <PicUrl><![CDATA[<%= item.picUrl %>]]></PicUrl>
+            <Url><![CDATA[<%= item.url %>]]></Url>
+        </item>
+        <% }) %>
+    </Articles>   
+    <% } %>
+    </xml>
 */})
 
 var compiled = ejs.compile(tpl);
