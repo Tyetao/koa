@@ -1,6 +1,11 @@
 /**
  * Created by 76506 on 2017/07/25.
  */
+var path = require('path');
+var config = require('./config');
+var Wechat = require('./wechat/wechat');
+var WechatApi = new Wechat(config.wechat);
+
 exports.reply = function *(next) {
   var message = this.weixin;
   if (message.MsgType === 'event') {
@@ -34,11 +39,14 @@ exports.reply = function *(next) {
 
     if (content === '1') {
       reply = '1'
-    } else if(content === '2'){
+    }
+    else if(content === '2'){
       reply = '2'
-    } else if(content === '3'){
+    }
+    else if(content === '3'){
       reply = '3'
-    } else if(content === '4'){
+    }
+    else if(content === '4'){
       reply = [{
         title: 'title1',
         description: 'description1',
@@ -51,7 +59,53 @@ exports.reply = function *(next) {
         url: 'http://up1994.com:8888/technicalNotes'
       }]
     }
+    else if(content === '5'){
+        var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'));
 
+        reply = {
+            type: 'image',
+            mediaId: data.media_id
+        }
+    }
+    else if(content === '6'){
+        var data = yield WechatApi.uploadMaterial('video', path.join(__dirname, './IMG_0451.mp4'));
+
+        reply = {
+            type: 'video',
+            title: '回复视频内容',
+            description: '拍代码',
+            mediaId: data.media_id
+        }
+    }
+    else if(content === '7'){
+        var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'));
+
+        reply = {
+            type: 'music',
+            title: '回复音乐内容',
+            description: '放松一下',
+            musicUrl: 'http://mpge.5nb.com/2015/2015-9-12/66325/1.mp3',
+            thumbMediaId: data.media_id
+        }
+    }
+    else if(content === '8'){
+        var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'), {type: 'image'});
+
+        reply = {
+            type: 'image',
+            mediaId: data.media_id
+        }
+    }
+    else if(content === '9'){
+        var data = yield WechatApi.uploadMaterial('video', path.join(__dirname, './IMG_0451.mp4' ), {type: 'video', description:'{ "title": "description", "introduction":"introduction"}'});
+
+        reply = {
+            type: 'video',
+            title: '回复音乐内容',
+            description: '放松一下',
+            mediaId: data.media_id
+        }
+    }
     this.body = reply;
   }
 

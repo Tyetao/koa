@@ -4,7 +4,7 @@ var Wechat = require('./wechat');
 var util = require('./util');
 
 module.exports = function (opts, handler) {
-    var webchat = new Wechat(opts);
+    var wechat = new Wechat(opts);
 
     return function *(next){
         var that = this;
@@ -32,33 +32,19 @@ module.exports = function (opts, handler) {
                 length: this.length,
                 limit: '1mb',
                 encoding: this.charset
-            })
+            });
 
             var content = yield util.parseXMLAsync(data);
 
             var message = util.formatMessage(content.xml);
 
-            /* if (message.MsgType === 'event') {
-                if ( message.Event === 'subscribe') {
-                    var now = new Date().getTime();
-                    that.status = 200;
-                    that.type = 'application/xml';
-                    var reply = '<xml>' +
-                        '<ToUserName><![CDATA[' +message.FromUserName+ ']]></ToUserName>' +
-                        '<FromUserName><![CDATA['+message.ToUserName+']]></FromUserName>' +
-                        '<CreateTime>12345678</CreateTime>' +
-                        '<MsgType><![CDATA[text]]></MsgType>' +
-                        '<Content><![CDATA[你好]]></Content>' +
-                        '</xml>';
-                    that.body = reply;            
-                }
-            } */
+            console.log('message', message);
 
             this.weixin = message;
 
             yield handler.call(this, next);
             
-            webchat.reply.call(this);
+            wechat.reply.call(this);
         }
     }
 }
