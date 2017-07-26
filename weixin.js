@@ -26,12 +26,12 @@ exports.reply = function *(next) {
       this.body = '你点击了菜单' + message.EventKey
     }
     else if (message.Event === 'SCAN') {
-       console.log('扫二维码进来的'+ message.EventKey);
-       this.body = '看到你了哦';
+      console.log('扫二维码进来的' + message.EventKey);
+      this.body = '看到你了哦';
     }
     else if (message.Event === 'VIEW') {
-       this.body = '你点击了菜单中的链接' + message.EventKey;
-    }  
+      this.body = '你点击了菜单中的链接' + message.EventKey;
+    }
   }
   else if (message.MsgType === 'text') {
     var content = message.Content;
@@ -40,71 +40,74 @@ exports.reply = function *(next) {
     if (content === '1') {
       reply = '1'
     }
-    else if(content === '2'){
+    else if (content === '2') {
       reply = '2'
     }
-    else if(content === '3'){
+    else if (content === '3') {
       reply = '3'
     }
-    else if(content === '4'){
+    else if (content === '4') {
       reply = [{
         title: 'title1',
         description: 'description1',
         picUrl: 'http://101.200.44.252:9090/static/1493472812482.jpeg',
         url: 'http://up1994.com:8888/technicalNotes'
-      },{
+      }, {
         title: 'title2',
         description: 'description2',
         picUrl: 'http://101.200.44.252:9090/static/1495532389276.png',
         url: 'http://up1994.com:8888/technicalNotes'
       }]
     }
-    else if(content === '5'){
-        var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'));
+    else if (content === '5') {
+      var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'));
 
-        reply = {
-            type: 'image',
-            mediaId: data.media_id
-        }
+      reply = {
+        type: 'image',
+        mediaId: data.media_id
+      }
     }
-    else if(content === '6'){
-        var data = yield WechatApi.uploadMaterial('video', path.join(__dirname, './IMG_0451.mp4'));
+    else if (content === '6') {
+      var data = yield WechatApi.uploadMaterial('video', path.join(__dirname, './IMG_0451.mp4'));
 
-        reply = {
-            type: 'video',
-            title: '回复视频内容',
-            description: '拍代码',
-            mediaId: data.media_id
-        }
+      reply = {
+        type: 'video',
+        title: '回复视频内容',
+        description: '拍代码',
+        mediaId: data.media_id
+      }
     }
-    else if(content === '7'){
-        var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'));
+    else if (content === '7') {
+      var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'));
 
-        reply = {
-            type: 'music',
-            title: '回复音乐内容',
-            description: '放松一下',
-            musicUrl: 'http://mpge.5nb.com/2015/2015-9-12/66325/1.mp3',
-            thumbMediaId: data.media_id
-        }
+      reply = {
+        type: 'music',
+        title: '回复音乐内容',
+        description: '放松一下',
+        musicUrl: 'http://mpge.5nb.com/2015/2015-9-12/66325/1.mp3',
+        thumbMediaId: data.media_id
+      }
     }
-    else if(content === '8'){
-        var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'), {type: 'image'});
+    else if (content === '8') {
+      var data = yield WechatApi.uploadMaterial('image', path.join(__dirname, './2.jpg'), {type: 'image'});
 
-        reply = {
-            type: 'image',
-            mediaId: data.media_id
-        }
+      reply = {
+        type: 'image',
+        mediaId: data.media_id
+      }
     }
-    else if(content === '9'){
-        var data = yield WechatApi.uploadMaterial('video', path.join(__dirname, './IMG_0451.mp4' ), {type: 'video', description:'{ "title": "description", "introduction":"introduction"}'});
+    else if (content === '9') {
+      var data = yield WechatApi.uploadMaterial('video', path.join(__dirname, './IMG_0451.mp4'), {
+        type: 'video',
+        description: '{ "title": "description", "introduction":"introduction"}'
+      });
 
-        reply = {
-            type: 'video',
-            title: '回复音乐内容',
-            description: '放松一下',
-            mediaId: data.media_id
-        }
+      reply = {
+        type: 'video',
+        title: '回复音乐内容',
+        description: '放松一下',
+        mediaId: data.media_id
+      }
     }
     this.body = reply;
   }
